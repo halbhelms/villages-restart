@@ -1,7 +1,6 @@
 <script>
-    /** @type {import('./$types').LayoutData} */
-    import "../app.css";
-    let {children} = $props();
+  import "../app.css";
+  let {children} = $props();
 </script>
 
 
