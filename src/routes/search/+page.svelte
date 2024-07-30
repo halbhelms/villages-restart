@@ -5,7 +5,7 @@
   <!-- search by name -->
   <div class="px-4">
     <label for="name" class="">Search by name</label>
-    <input type="name" id="name" name="name" />
+    <input type="name" id="name" name="name" placeholder="Event name"/>
   </div>
   <!-- search by date -->
   <div class="px-4">
