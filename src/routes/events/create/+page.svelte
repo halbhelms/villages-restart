@@ -36,11 +36,6 @@
     <label for="cutoff_date" class="text-xs">Cutoff date</label>
     <input type="date" id="cutoff_date" name="cutoff_date" />
   </div>
-  
-  <div class="px-4">
-    <label for="email" class="text-xs">Your email</label>
-    <input type="email" id="email" name="email" />
-  </div>
 
   <div class="px-4">
     <label for="event_details" class="text-xs">Event details</label>
@@ -77,17 +72,17 @@
   </div>
     
   <div class="px-4">
-    <label for="price" class="text-xs">Price</label>
+    <label for="price" class="">Price</label>
     <input type="number" id="price" name="price" />
   </div>
     
   <div class="px-4">
-    <label for="max_attendees" class="text-xs">Max attendees</label>
+    <label for="max_attendees" class="">Max attendees</label>
     <input type="number" id="max_attendees" name="max_attendees" />
   </div>
     
   <div class="px-4">
-    <label for="access" class="text-xs">Access</label>
+    <label for="access" class="">Access</label>
   </div>
 
   <div class="px-4">
@@ -108,26 +103,19 @@
 
 
   <div class="flex justify-center mt-3">
-  <button>Register Me!</button>
+  <button>Create Event!</button>
   </div>
 
 </form>
 
 </main>
 
-name,
-        description,
-        event_details,
-        starts,
-        ends,
-        cutsoff,
-        location,
-        categories,
-        price,
-        max_attendees,
-        access,
-        publish_ready,
-        host_id,
-        host_name,
-        created_at,
-        updated_at
+<style lang="postcss">
+  input[type="text"], input[type="email"], input[type="number"], input[type="date"], input[type="time"], textarea {
+    @apply border-b-2 border-gray-300 focus:outline-none w-full;
+  }
+
+  button {
+    @apply bg-blue-500 text-white font-bold py-2 px-4 text-center rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50;
+  }
+</style>
