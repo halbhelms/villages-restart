@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3'
-import { User } from './user'
-import { EventModel as Event } from './event'
+import { Member } from './member'
+import { Event } from './event'
 import { Attendee } from './attendee'
 
 const database = new Database('villages.db', { verbose: console.log })
@@ -12,4 +12,6 @@ database.pragma('optimize')
 
 export const models = {
   Event: new Event(database),
+  Member: new Member(database),
+  Attendee: new Attendee(database),
 }
