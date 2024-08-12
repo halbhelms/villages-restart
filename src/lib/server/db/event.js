@@ -1,11 +1,15 @@
-import { Database } from 'better-sqlite3';
-
 export class Event {
   db = null
+  preparedStatements = new Map();
   
   constructor(db) {
     this.db = db;
     this.init();
+  }
+
+  setPreparedStatement(key, statement) {
+    this.preparedStatements.has(key) || this.preparedStatements.set(key, this.db.prepare(statement));
+    return this.preparedStatements.get(key);
   }
 
   init() {
@@ -14,7 +18,6 @@ export class Event {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
         description TEXT,
-        event_details TEXT,
         starts TEXT,
         ends TEXT,
         cutsoff TEXT,
@@ -35,11 +38,10 @@ export class Event {
 
 
   create(data) {
-    const stmt = this.db.prepare(`
+    const stmt = this.setPreparedStatement('create', `
       INSERT INTO events (
         name,
         description,
-        event_details,
         starts,
         ends,
         cutsoff,
@@ -56,7 +58,6 @@ export class Event {
       ) VALUES (
         @name,
         @description,
-        @event_details,
         @starts,
         @ends,
         @cutsoff,
@@ -77,7 +78,7 @@ export class Event {
   }
 
   update(data) {
-    const stmt = this.db.prepare(`
+    const stmt = this.setPreparedStatement('update',`
       UPDATE events SET
         name = @name,
         description = @description,
@@ -100,40 +101,40 @@ export class Event {
     return stmt.run(data);
   }
 
-  get(id) {
-    const stmt = this.db.prepare(`SELECT * FROM events WHERE id = ?`);
+  findById(id) {
+    const stmt = this.setPreparedStatement('findById', `SELECT * FROM events WHERE id = ?`);
     const event = stmt.get(id);
     return event;
   }
 
-  getAllPublishedEvents() {
-    const stmt = this.db.prepare(`SELECT * FROM events WHERE publish_ready = 1`);
+  findAllPublishedEvents() {
+    const stmt = this.setPreparedStatement('findAllPublishedEvents', `SELECT * FROM events WHERE publish_ready = 1`);
     const events = stmt.all();
     console.log('events', events)
     return events;
   }
 
   findByCategory(category) {
-    const stmt = this.db.prepare("SELECT * FROM events WHERE categories LIKE @category");
+    const stmt = this.setPreparedStatement('findByCategory', "SELECT * FROM events WHERE categories LIKE @category");
     const events = stmt.all({ category: `%${category}%` });
     console.log('events', events)
     return events;
   }
 
   findByEventName(name) {
-    const stmt = this.db.prepare(`SELECT * FROM events WHERE name LIKE ?`);
+    const stmt = this.setPreparedStatement('findByEventName', `SELECT * FROM events WHERE name LIKE ?`);
     const events = stmt.all(`%${name}%`);
     return events;
   }
 
   findByDate(date) {
-    const stmt = this.db.prepare(`SELECT * FROM events WHERE starts LIKE ?`);
+    const stmt = this.setPreparedStatement('findByDate', `SELECT * FROM events WHERE starts LIKE ?`);
     const events = stmt.all(`%${date}%`);
     return events;
   }
 
   findByHostId(host_id) {
-    const stmt = this.db.prepare(`SELECT * FROM events WHERE host_id = ?`);
+    const stmt = this.setPreparedStatement('findByHostId', `SELECT * FROM events WHERE host_id = ?`);
     const events = stmt.all(`%${host_id}%`);
     return events;
   }

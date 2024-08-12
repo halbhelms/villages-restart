@@ -10,7 +10,7 @@
   
   <div class="px-4 mt-2">
     <label for="name" class="block">Event name</label>
-    <input type="text" id="name" name="name" />
+    <input type="text" id="name" class="w-full" name="name" />
   </div>
   
   <div class="px-4 mt-2">
@@ -34,13 +34,13 @@
   </div>
   
   <div class="px-4 mt-2">
-    <label for="cutoff_date" class="">Cutoff date</label>
-    <input type="date" id="cutoff_date" name="cutoff_date" />
+    <label for="cutsoff" class="">Cutoff date</label>
+    <input type="date" id="cutsoff" name="cutsoff" />
   </div>
 
   <div class="px-4 mt-2">
-    <label for="event_details" class="">Event details</label>
-    <textarea id="event_details" name="event_details"></textarea>
+    <label for="description" class="">Event description/details</label>
+    <textarea id="description" name="description"></textarea>
   </div>
 
   <div class="px-4 mt-2">
