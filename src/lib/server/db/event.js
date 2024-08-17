@@ -107,10 +107,15 @@ export class Event {
     return event;
   }
 
+  findAllEvents() {
+    const stmt = this.setPreparedStatement('findAllEvents', `SELECT * FROM events`);
+    const events = stmt.all();
+    return events;
+  }
+
   findAllPublishedEvents() {
     const stmt = this.setPreparedStatement('findAllPublishedEvents', `SELECT * FROM events WHERE publish_ready = 1`);
     const events = stmt.all();
-    console.log('events', events)
     return events;
   }
 
