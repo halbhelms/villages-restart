@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 
-export async function load() {
+export async function load({ request, locals }) {
   return {};
 };
 
@@ -15,7 +15,7 @@ export const actions = {
     const currentUser = locals.models.Member.getFromLogin(formData.phone, formData.password);
     if (currentUser) {
       locals.currentUser = currentUser;
-      throw redirect(302, '/events');
+      throw redirect(302, '/events/list');
     }
 
     return { status: 200, success: false };

@@ -1,5 +1,6 @@
-export async function load() {
-  return {};
+export async function load({ request, locals }) {
+  const allEvents = locals.models.Event.findAllEvents();
+  return { allEvents };
 };
 
 export const actions = {

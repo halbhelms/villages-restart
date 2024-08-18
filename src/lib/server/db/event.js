@@ -27,8 +27,8 @@ export class Event {
         max_attendees INTEGER,
         access TEXT,
         publish_ready INTEGER,
-        host_id INTEGER,
-        host_name TEXT,
+        host_id INTEGER, 
+        host_name TEXT, 
         created_at TEXT,
         updated_at TEXT
       )`
