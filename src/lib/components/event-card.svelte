@@ -1,5 +1,7 @@
 <script>
-  let { event } = $props();
+  import { enhance } from '$app/forms';
+
+  let { event, userAttending } = $props();
 
   function formatCurrency(amount) {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
@@ -23,7 +25,7 @@
 </script>
 
 <main>
-  <div class="card">
+  <div class="card text-sm">
     <div class="card-content">
       <div class="content">
         <h3>{event.name}</h3>
@@ -34,6 +36,14 @@
         <p>{event.location}</p>
         <p>{formatCurrency(event.price)}</p>
       </div>
+      <form method="POST" use:enhance>
+        <input type="hidden" name="event_id" value="{event.id}">
+        {#if userAttending}
+          <div>You are attending this event</div>
+        {:else}
+          <button>Register</button>
+        {/if}
+      </form>
     </div>
   </div>
 </main>

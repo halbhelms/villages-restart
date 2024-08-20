@@ -32,7 +32,6 @@ export const actions = {
     formData.created_at = new Date().toISOString();
     formData.updated_at = new Date().toISOString();
 
-    console.log('formData', formData)
     locals.models.Event.create(formData);
     return { status: 200, success: true };
   }

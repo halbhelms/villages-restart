@@ -32,8 +32,9 @@ export class Member {
   }
 
   create(data) {
-    const stmt = this.setPreparedStatement('create', `
-      INSERT INTO members (
+    const stmt = this.setPreparedStatement(
+      'create', 
+      `INSERT INTO members (
         first_name,
         last_name,
         email,

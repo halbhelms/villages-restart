@@ -10,6 +10,7 @@ database.pragma('foreign_keys = ON')
 database.pragma('analysis_limit = 400')
 database.pragma('optimize')
 
+
 export const models = {
   Event: new Event(database),
   Member: new Member(database),

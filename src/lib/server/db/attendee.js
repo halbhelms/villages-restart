@@ -1,7 +1,16 @@
 export class Attendee {
   db = null;
   preparedStatements = new Map();
-  
+
+  schema = {
+    id: 'INTEGER PRIMARY KEY AUTOINCREMENT',
+    member_id: 'INTEGER',
+    event_id: 'INTEGER',
+    status: 'TEXT',
+    created_at: 'TEXT',
+    updated_at: 'TEXT'
+  }
+
   constructor(db) {
     this.db = db;
     this.init();
@@ -15,22 +24,22 @@ export class Attendee {
   init() {
     const creationString = `
       CREATE TABLE IF NOT EXISTS attendees (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        member_id INTEGER,
-        event_id INTEGER,
-        status TEXT,
-        created_at TEXT,
-        updated_at TEXT,
-        FOREIGN KEY (user_id) REFERENCES user(id),
-        FOREIGN KEY (event_id) REFERENCES event(id)
+        ${Object.entries(this.schema).map(([key, value]) => `${key} ${value}`).join(', ')},
+        FOREIGN KEY (member_id) REFERENCES members(id),
+        FOREIGN KEY (event_id) REFERENCES events(id)
       )`
-
     this.db.exec(creationString);
+
+    const indexString = `
+      CREATE UNIQUE INDEX IF NOT EXISTS idx_attendees_event_id ON attendees(member_id, event_id)
+    `
+    this.db.exec(indexString);
   }
 
   create(data) {
-    const stmt = this.setPreparedStatement('create', `
-      INSERT INTO attendees (
+    const stmt = this.setPreparedStatement(
+      'create', 
+      `INSERT INTO attendees (
         event_id,
         member_id,
         status,
@@ -49,10 +58,11 @@ export class Attendee {
   }
 
   update(data) {
-    const stmt = this.setPreparedStatement('update',`
-      UPDATE attendees SET
+    const stmt = this.setPreparedStatement(
+      'update',
+      `UPDATE attendees SET
         event_id = @event_id,
-        user_id = @user_id,
+        member_id = @member_id,
         status = @status,
         updated_at = @updated_at
       WHERE id = @id
@@ -68,7 +78,7 @@ export class Attendee {
   }
 
   isSignedUp(event_id, user_id) {
-    const stmt = this.setPreparedStatement('isSignedUp', `SELECT * FROM attendees WHERE event_id = @event_id AND user_id = @user_id`);
+    const stmt = this.setPreparedStatement('isSignedUp', `SELECT * FROM attendees WHERE event_id = @event_id AND member_id = @member_id`);
     const attendee = stmt.get({ event_id, user_id });
     return attendee ? true : false;
   }
@@ -77,5 +87,11 @@ export class Attendee {
     const stmt = this.setPreparedStatement('getAttendees',`SELECT * FROM attendees WHERE event_id = @event_id`);
     const attendees = stmt.all({ event_id });
     return attendees;
+  }
+
+  findEventsByMember(member_id) {
+    const stmt = this.setPreparedStatement('findEventsByMember', `SELECT * FROM attendees WHERE member_id = @member_id`);
+    const events = stmt.all({member_id});
+    return events;
   }
 }

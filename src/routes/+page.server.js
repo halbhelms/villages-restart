@@ -14,7 +14,17 @@ export const actions = {
     // check if user exists
     const currentUser = locals.models.Member.getFromLogin(formData.phone, formData.password);
     if (currentUser) {
-      locals.currentUser = currentUser;
+      // set cookie
+      const userCookie = JSON.stringify(currentUser);
+      cookies.set(
+        'currentUser', 
+        userCookie, 
+        {
+          httpOnly: true,
+          maxAge: 60 * 60 * 24 * 7, // 1 week
+          path: '/'
+        }
+      );
       throw redirect(302, '/events/list');
     }
 
